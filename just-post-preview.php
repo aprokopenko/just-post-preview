@@ -1,9 +1,13 @@
 <?php
 /*
-Plugin Name: Just Post Preview 
+Plugin Name: Just Post Preview Widget
 Description: Widget to easy add any content preview block with different layouts, specified in the theme.
-Version: 1
+Tags: post preview, widget, layouts, developer
+Version: 1.0
+Author: Alexander Prokopenko 
+Author URI: http://justcoded.com/
 */
+
 
 define('JPP_PATH', dirname(__FILE__));
 define('JPP_URL', WP_PLUGIN_URL . '/'. basename(JPP_PATH) . '/' );
