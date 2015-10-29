@@ -8,11 +8,9 @@ Author: Alexander Prokopenko
 Author URI: http://justcoded.com/
 */
 
-
 define('JPP_PATH', dirname(__FILE__));
 define('JPP_URL', WP_PLUGIN_URL . '/'. basename(JPP_PATH) . '/' );
 require_once( JPP_PATH . '/just-post-preview.widget.php' );
-
 
 // print helper function
 if( ! function_exists('pa') ) :
@@ -54,22 +52,3 @@ function jpp_trim_excerpt( WP_Post $post ) {
 	}
 	return apply_filters( 'wp_trim_excerpt', $text, $raw_excerpt );
 }
-
-
-/*
-//Register widgets for WP
-function just_post_preview_init() {
-	register_widget('WP_Widget_Just_Post_Preview');
-	
-}
-
-//Add created widget to Widget area of Page Builder
-function just_post_preview($the_widget) {
-    if(empty($the_widget)) {
-        $the_widget = new $widget();
-    }
-
-    return $the_widget;
-}
-add_filter('siteorigin_panels_widget_object', 'just_post_preview');
-*/

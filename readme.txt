@@ -14,7 +14,7 @@ Widget to easy add any content preview block with different layouts, specified i
 == Description ==
 
 This plugin is for developers who need to easy edit complex layouts and insert different post tile blocks inside the layout, sidebars or page builders.
-You can rewrite pre-defined 3 layouts or register custom layouts inside the theme. Unfortunately pre-defined layouts has no styles inside. (Because they will be overwritten in the theme 100% anyway)
+By default it has 3 pre-defined layouts, you can rewrite them in your theme or register custom layouts. Unfortunately pre-defined layouts has no styles inside. (Because they will be overwritten in the theme 100% anyway)
 
 = Template files =
 To overwrite pre-defined templates you should create folder with name `just-post-preview` in the root of your theme and copy required templates from the `/wp-content/plugins/just-post-preview/layous/` folder.

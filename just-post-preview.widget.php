@@ -9,6 +9,9 @@
  */
 class JPP_Widget_Post_Preview extends WP_Widget {
 	
+	/**
+	 * Main widget constructor
+	 */
 	public function __construct() {
 		parent::__construct(
 				'jpp_widget_post_preview',  // Base ID
@@ -17,6 +20,9 @@ class JPP_Widget_Post_Preview extends WP_Widget {
 			);
 	}
 
+	/**
+	 * Apply custom styles and scripts to admin UI (only for Widgets or Post Edit page)
+	 */
 	public static function admin_scripts(){
 		// exit if we not on widget pages or post edit
 		if( strpos($_SERVER['SCRIPT_NAME'], 'widgets.php') === FALSE &&
@@ -33,6 +39,12 @@ class JPP_Widget_Post_Preview extends WP_Widget {
 		wp_enqueue_style('jpp_post_preview_widget_css');
 	}
 	
+	/**
+	 * Print widget on frontend
+	 * 
+	 * @param array $args		theme sidebar settings for specific region
+	 * @param array $instance	widget settings
+	 */
 	public function widget($args, $instance) {
 		// apply defaults
 		$instance = array_merge(array(
@@ -44,7 +56,8 @@ class JPP_Widget_Post_Preview extends WP_Widget {
 		), $instance);
 
 		$post = get_post($instance['post_id']);
-
+		if ( empty($post) ) return;
+		
 		// print start widget
 		echo $args['before_widget'];
 		echo strtr('<div class="widget jpp_post_preview jpp_post_preview_{postid} jpp_layout_{layout} {extra_class}">', array(
@@ -73,6 +86,11 @@ class JPP_Widget_Post_Preview extends WP_Widget {
 		echo $args['after_widget'];
 	}
 
+	/**
+	 * Print Widget form
+	 * 
+	 * @param array $instance
+	 */
 	public function form( $instance ) {
 		$title		= isset( $instance['title'] ) ? esc_attr( $instance['title'] ) : '';
 		$post_type	= isset( $instance['post_type'] ) ? $instance['post_type'] : '';
@@ -114,6 +132,12 @@ class JPP_Widget_Post_Preview extends WP_Widget {
 <?php
 	}
 
+	/**
+	 * Update widget settings
+	 * 
+	 * @param array $new_instance
+	 * @param array $old_instance
+	 */
 	public function update( $new_instance, $old_instance ) {
 		$instance = $old_instance;
 		$instance['title'] = strip_tags($new_instance['title']);
@@ -126,6 +150,12 @@ class JPP_Widget_Post_Preview extends WP_Widget {
 		return $instance;
 	}
 	
+	/**
+	 * Print <option> tags based on array and selected value
+	 * 
+	 * @param array $options
+	 * @param string $selected
+	 */
 	protected function html_options( $options, $selected ){
 		if( !is_array($options) ) return '';
 		foreach( $options as $value => $label) {
@@ -137,6 +167,11 @@ class JPP_Widget_Post_Preview extends WP_Widget {
 		}
 	}
 	
+	/**
+	 * Return registered post types
+	 * 
+	 * @return array	(key => title) pairs of registered post types
+	 */
 	protected function get_post_types_options(){
 		$args = array( 'public' => true );
 		$post_types = get_post_types($args, 'objects');
@@ -151,6 +186,11 @@ class JPP_Widget_Post_Preview extends WP_Widget {
 		return $options;
 	}
 	
+	/**
+	 * Get pre-defined layouts list
+	 * 
+	 * @return array	(key => name) pairs
+	 */
 	protected function get_available_layouts(){
 		$layouts = array(
 			'hero' => 'Hero post (Featured image as Background)',
@@ -162,7 +202,11 @@ class JPP_Widget_Post_Preview extends WP_Widget {
 		return $layouts;
 	}
 
-	
+	/**
+	 * Callback for Post autocomplete search
+	 * 
+	 * @global \wpdb $wpdb
+	 */
 	public static function ajax_post_autocomplete(){
 		$term = $_POST['term'];
 		$post_type = $_POST['post_type'];
