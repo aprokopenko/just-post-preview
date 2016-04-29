@@ -214,13 +214,13 @@ class JPP_Widget_Post_Preview extends WP_Widget {
 		
 		global $wpdb;
 
-		$safe_post_type = mysql_escape_string($post_type);
-		$safe_term = mysql_escape_string($term);
+		$safe_post_type = $wpdb->_real_escape($post_type);
+		$safe_term = $wpdb->_real_escape($term);
 
 		// search by URL
 		if( strpos($term, 'http') !== FALSE ){
 			$post_name = basename( parse_url($term, PHP_URL_PATH) );
-			$safe_term = mysql_escape_string($post_name);
+			$safe_term = $wpdb->_real_escape($post_name);
 			$query = "SELECT ID, post_title, post_type FROM $wpdb->posts WHERE post_status = 'publish' AND post_name LIKE '%$safe_term%' ORDER BY post_title LIMIT 10";
 		}
 		else{
