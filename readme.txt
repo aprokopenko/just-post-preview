@@ -5,7 +5,7 @@ Author: Alexander Prokopenko
 Author URI: http://justcoded.com/
 Tags: post preview, widget, layouts, developer
 Requires at least: 4.0
-Tested up to: 4.3
+Tested up to: 4.5.2
 Stable tag: trunk
 License: GNU General Public License v3
 
