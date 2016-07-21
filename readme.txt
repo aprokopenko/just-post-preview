@@ -1,7 +1,7 @@
 === Just Post Preview Widget ===
 Contributors: aprokopenko
 Plugin Name: Just Post Preview Widget for for Wordpress
-Author: Alexander Prokopenko
+Author: JustCoded / Alex Prokopenko
 Author URI: http://justcoded.com/
 Tags: post preview, widget, layouts, developer
 Requires at least: 4.0
