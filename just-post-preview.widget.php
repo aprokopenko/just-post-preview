@@ -67,20 +67,27 @@ class JPP_Widget_Post_Preview extends WP_Widget {
 		));
 		
 		// print layout
-		$theme_dir = get_stylesheet_directory() . '/just-post-preview/';
-		$plugin_dir = JPP_PATH . '/layouts/';
-		
 		$layout_file = 'jpp_layout_' . $instance['widget_layout'] . '.php';
-		if( is_file($theme_dir . $layout_file) ){
-			include($theme_dir . $layout_file);
+		$templates = array(
+			get_stylesheet_directory() . '/just-post-preview/' . $layout_file,
+			get_template_directory() . '/just-post-preview/' . $layout_file,
+			JPP_PATH . '/layouts/' . $layout_file,
+		);
+		// adds ability to patch layouts placement
+		$templates = apply_filters('jpp_post_preview_template', $templates);
+
+		$template_loaded = false;
+		foreach ($templates as $template) {
+			if ( is_file($template) ) {
+				include ($template);
+				$template_loaded = true;
+			}
 		}
-		elseif( is_file($plugin_dir . $layout_file) ){
-			include($plugin_dir . $layout_file);
+
+		if ( !$template_loaded ) {
+			echo '<b>Fatal error: </b> Layout template file missing: ' . $templates[0];
 		}
-		else{
-			echo '<b>Fatal error: </b> Layout template file missing: ' . $theme_dir . $layout_file;
-		}
-		
+
 		// print end widget
 		echo '</div>';
 		echo $args['after_widget'];

@@ -63,6 +63,7 @@ To upgrade remove the old plugin folder. After than follow the installation step
 == Changelog ==
 = Version 1.1 =
 	* New feature: Ability to search without specifying post type (beta)
+	* New hook: You can control the templates source with new hook `jpp_post_preview_template`
 	* Bug fix: PHP 7+ compatibility fix
 = Version 1.0 =
 	* Plugin base with 3 pre-defined layouts
