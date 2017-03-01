@@ -108,7 +108,7 @@ class JPP_Widget_Post_Preview extends WP_Widget {
 		<p>
 			<label for="<?php echo $this->get_field_id( 'post_type' ); ?>"><?php _e( 'Post type:' ); ?></label>
 			<select required class="widefat jpp_post_preview_post_type noinit" id="<?php echo $this->get_field_id( 'post_type' ); ?>" name="<?php echo $this->get_field_name( 'post_type' ); ?>">
-				<?php $this->html_options( $this->get_post_types_options(), $post_type ); ?>
+				<?php $this->html_options( self::get_post_types_options(), $post_type ); ?>
 			</select>
 		</p>
 				
@@ -172,10 +172,12 @@ class JPP_Widget_Post_Preview extends WP_Widget {
 	 * 
 	 * @return array	(key => title) pairs of registered post types
 	 */
-	protected function get_post_types_options(){
+	protected static function get_post_types_options(){
 		$args = array( 'public' => true );
 		$post_types = get_post_types($args, 'objects');
-		$options = array();
+		$options = array(
+				'_any_' => 'Any',
+		);
 		foreach($post_types as $pt){
 			$label = $pt->labels->name;
 			$value = $pt->name;
@@ -208,31 +210,45 @@ class JPP_Widget_Post_Preview extends WP_Widget {
 	 * @global \wpdb $wpdb
 	 */
 	public static function ajax_post_autocomplete(){
-		$term = $_POST['term'];
+		$term = stripcslashes($_POST['term']);
 		$post_type = $_POST['post_type'];
 		if(empty($term)) die('');
 		
 		global $wpdb;
 
-		$safe_post_type = mysql_escape_string($post_type);
-		$safe_term = mysql_escape_string($term);
+		$query = "SELECT ID, post_title, post_type FROM $wpdb->posts WHERE post_status = 'publish' ";
+		$query_args = array();
 
-		// search by URL
-		if( strpos($term, 'http') !== FALSE ){
+		if ( strpos($term, 'http') === 0 ) {
 			$post_name = basename( parse_url($term, PHP_URL_PATH) );
-			$safe_term = mysql_escape_string($post_name);
-			$query = "SELECT ID, post_title, post_type FROM $wpdb->posts WHERE post_status = 'publish' AND post_name LIKE '%$safe_term%' ORDER BY post_title LIMIT 10";
+			$query .= " AND post_name LIKE '%%%s%%' ";
+			$query_args[] = $post_name;
 		}
-		else{
-			$query = "SELECT ID, post_title, post_type	FROM $wpdb->posts WHERE post_type = '$safe_post_type' AND post_status = 'publish' AND post_title LIKE '%$safe_term%' ORDER BY post_title LIMIT 10";
+		else {
+			if ( '_any_' != $post_type ) {
+				$query .= " AND post_type = %s ";
+				$query_args[] = $post_type;
+			}
+			else {
+				$query .= " AND post_type NOT IN ('nav_menu_item', 'attachment', 'revision') ";
+			}
+
+			$query .= " AND post_title LIKE '%%%s%%' ";
+			$query_args[] = $term;
 		}
 
+		$query .= " ORDER BY post_title LIMIT 10 ";
+
+		$query = $wpdb->prepare($query, $query_args);
 		$posts = $wpdb->get_results($query);
 
+		$post_types = self::get_post_types_options();
+
 		$response = array();
-		foreach($posts as $post){
+		foreach ( $posts as $post ) {
+			$post_type_label = !empty($post_types[$post->post_type])? $post_types[$post->post_type] : $post->post_type;
 			$response[] = array(
-				'label' => $post->post_title,
+				'label' => "$post->post_title ($post_type_label)",
 				'value' =>  $post->post_title,
 				'post_type' => $post->post_type,
 				'post_id' => $post->ID,

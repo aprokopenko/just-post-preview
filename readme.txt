@@ -5,7 +5,7 @@ Author: JustCoded / Alex Prokopenko
 Author URI: http://justcoded.com/
 Tags: post preview, widget, layouts, developer
 Requires at least: 4.0
-Tested up to: 4.5.2
+Tested up to: 4.7.2
 Stable tag: trunk
 License: GNU General Public License v3
 
@@ -61,6 +61,9 @@ To upgrade remove the old plugin folder. After than follow the installation step
 2. Using widget inside the SiteOrigin Page builder plugin
 
 == Changelog ==
+= Version 1.1 =
+	* New feature: Ability to search without specifying post type (beta)
+	* Bug fix: PHP 7+ compatibility fix
 = Version 1.0 =
 	* Plugin base with 3 pre-defined layouts
 	

@@ -3,7 +3,7 @@
 Plugin Name: Just Post Preview Widget
 Description: Widget to easy add any content preview block with different layouts, specified in the theme.
 Tags: post preview, widget, layouts, developer
-Version: 1.0
+Version: 1.1
 Author: JustCoded / Alex Prokopenko
 Author URI: http://justcoded.com/
 */
