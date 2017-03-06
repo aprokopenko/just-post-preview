@@ -61,6 +61,8 @@ To upgrade remove the old plugin folder. After than follow the installation step
 2. Using widget inside the SiteOrigin Page builder plugin
 
 == Changelog ==
+= Version 1.1.1 =
+	* Bug fix: Merged Pull Request from @rudibatt: missing break in templates load loop.
 = Version 1.1 =
 	* New feature: Ability to search without specifying post type (beta)
 	* New hook: You can control the templates source with new hook `jpp_post_preview_template`
