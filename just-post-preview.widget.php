@@ -81,6 +81,7 @@ class JPP_Widget_Post_Preview extends WP_Widget {
 			if ( is_file($template) ) {
 				include ($template);
 				$template_loaded = true;
+				break;
 			}
 		}
 
